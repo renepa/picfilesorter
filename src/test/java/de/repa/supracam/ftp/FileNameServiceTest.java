@@ -115,7 +115,9 @@ public class FileNameServiceTest {
                 "2017_02_12_18_29_12.jpg",
                 "2017_02_12_07_36_49.jpg",
                 "2017_02_10_23_06_00.jpg",
-                "201702_11_15_38_30.jpg");
+                "201702_11_15_38_30.jpg",
+                "2017_023_10_23_06_00.jpg",
+                "2017_023_10_2306_00.jpg");
         Map<String, List<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
 
         Assertions.assertThat(resultMap).containsOnlyKeys("2017_02_12", "2017_02_10", "undefined");
@@ -130,7 +132,9 @@ public class FileNameServiceTest {
                 );
         Assertions.assertThat(resultMap.get("undefined"))
                 .contains(
-                        "201702_11_15_38_30.jpg"
+                        "201702_11_15_38_30.jpg",
+                        "2017_023_10_23_06_00.jpg",
+                        "2017_023_10_2306_00.jpg"
                 );
     }
 }
