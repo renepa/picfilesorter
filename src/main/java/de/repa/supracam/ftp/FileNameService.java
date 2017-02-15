@@ -33,13 +33,17 @@ public class FileNameService {
         Map<String, List<String>> resultMap = new HashMap<>();
         for (String fileName : fileNames) {
             String dateOfFileName = getDateOfFileName(fileName);
-            if (!resultMap.containsKey(dateOfFileName)) {
-                resultMap.put(dateOfFileName, new LinkedList<String>(Arrays.asList(fileName)));
-            } else {
-                resultMap.get(dateOfFileName).add(fileName);
-            }
+            addFileNameToMapByDateOfFile(resultMap, fileName, dateOfFileName);
         }
         return resultMap;
+    }
+
+    private void addFileNameToMapByDateOfFile(Map<String, List<String>> resultMap, String fileName, String dateOfFileName) {
+        if (!resultMap.containsKey(dateOfFileName)) {
+            resultMap.put(dateOfFileName, new LinkedList<String>(Arrays.asList(fileName)));
+        } else {
+            resultMap.get(dateOfFileName).add(fileName);
+        }
     }
 
     private String getDateOfFileName(String fileName) {
