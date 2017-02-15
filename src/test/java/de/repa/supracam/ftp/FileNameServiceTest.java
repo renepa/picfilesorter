@@ -3,10 +3,7 @@ package de.repa.supracam.ftp;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FileNameServiceTest {
 
@@ -61,7 +58,6 @@ public class FileNameServiceTest {
         Assertions.assertThat(resultList).isEmpty();
     }
 
-
     @Test
     public void testGroupFileNamesByDay() throws Exception {
         List<String> fileList = Arrays.asList(
@@ -74,7 +70,7 @@ public class FileNameServiceTest {
                 "2017_02_09_18_29_12.jpg",
                 "2016_03_09_18_29_12.jpg",
                 "2017_02_10_23_05_00.jpg");
-        Map<String, List<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
+        Map<String, Set<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
         Assertions.assertThat(resultMap).containsOnlyKeys("2017_02_12", "2017_02_10", "2017_02_11", "2017_02_09", "2016_03_09");
         Assertions.assertThat(resultMap.get("2017_02_12"))
                 .contains(
@@ -105,7 +101,7 @@ public class FileNameServiceTest {
     @Test
     public void testGroupFileNamesByDayWithEmptyList() throws Exception {
         List<String> fileList = Collections.EMPTY_LIST;
-        Map<String, List<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
+        Map<String, Set<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
         Assertions.assertThat(resultMap.isEmpty());
     }
 
@@ -118,7 +114,7 @@ public class FileNameServiceTest {
                 "201702_11_15_38_30.jpg",
                 "2017_023_10_23_06_00.jpg",
                 "2017_023_10_2306_00.jpg");
-        Map<String, List<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
+        Map<String, Set<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
 
         Assertions.assertThat(resultMap).containsOnlyKeys("2017_02_12", "2017_02_10", "undefined");
         Assertions.assertThat(resultMap.get("2017_02_12"))

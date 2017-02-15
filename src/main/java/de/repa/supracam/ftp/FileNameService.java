@@ -29,8 +29,8 @@ public class FileNameService {
         return Collections.EMPTY_LIST;
     }
 
-    public Map<String, List<String>> groupFileNamesByDay(List<String> fileNames) {
-        Map<String, List<String>> resultMap = new HashMap<>();
+    public Map<String, Set<String>> groupFileNamesByDay(List<String> fileNames) {
+        Map<String, Set<String>> resultMap = new HashMap<>();
         for (String fileName : fileNames) {
             String dateOfFileName = getDateOfFileName(fileName);
             addFileNameToMapByDateOfFile(resultMap, fileName, dateOfFileName);
@@ -38,9 +38,9 @@ public class FileNameService {
         return resultMap;
     }
 
-    private void addFileNameToMapByDateOfFile(Map<String, List<String>> resultMap, String fileName, String dateOfFileName) {
+    private void addFileNameToMapByDateOfFile(Map<String, Set<String>> resultMap, String fileName, String dateOfFileName) {
         if (!resultMap.containsKey(dateOfFileName)) {
-            resultMap.put(dateOfFileName, new LinkedList<String>(Arrays.asList(fileName)));
+            resultMap.put(dateOfFileName, new HashSet<String>(Arrays.asList(fileName)));
         } else {
             resultMap.get(dateOfFileName).add(fileName);
         }
