@@ -1,6 +1,7 @@
 package de.repa.supracam.ftp;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.groups.Tuple;
 import org.junit.Test;
 
 import java.util.*;
@@ -70,42 +71,25 @@ public class FileNameServiceTest {
                 "2017_02_09_18_29_12.jpg",
                 "2016_03_09_18_29_12.jpg",
                 "2017_02_10_23_05_00.jpg");
-        Map<String, Set<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
-        Assertions.assertThat(resultMap).containsOnlyKeys("2017_02_12", "2017_02_10", "2017_02_11", "2017_02_09", "2016_03_09");
-        Assertions.assertThat(resultMap.get("2017_02_12"))
+        Set<ValidFileNamesOfADay> resultSet = fileNameService.groupFileNamesByDay(fileList);
+        Assertions.assertThat(resultSet)
+                .extracting("day", "fileNames")
                 .contains(
-                        "2017_02_12_18_29_12.jpg",
-                        "2017_02_12_07_36_49.jpg"
-                );
-        Assertions.assertThat(resultMap.get("2017_02_10"))
-                .contains(
-                        "2017_02_10_23_06_00.jpg",
-                        "2017_02_10_23_05_00.jpg"
-                );
-        Assertions.assertThat(resultMap.get("2017_02_11"))
-                .contains(
-                        "2017_02_11_15_38_30.jpg",
-                        "2017_02_11_15_46_18.jpg",
-                        "2017_02_11_15_47_18.jpg"
-                );
-        Assertions.assertThat(resultMap.get("2017_02_09"))
-                .contains(
-                        "2017_02_09_18_29_12.jpg"
-                );
-        Assertions.assertThat(resultMap.get("2016_03_09"))
-                .contains(
-                        "2016_03_09_18_29_12.jpg"
-                );
+                        Tuple.tuple("2017_02_12", new HashSet<>(Arrays.asList("2017_02_12_18_29_12.jpg", "2017_02_12_07_36_49.jpg"))),
+                        Tuple.tuple("2017_02_10", new HashSet<>(Arrays.asList("2017_02_10_23_06_00.jpg", "2017_02_10_23_05_00.jpg"))),
+                        Tuple.tuple("2017_02_11", new HashSet<>(Arrays.asList("2017_02_11_15_38_30.jpg", "2017_02_11_15_46_18.jpg", "2017_02_11_15_47_18.jpg"))),
+                        Tuple.tuple("2017_02_09", new HashSet<>(Arrays.asList("2017_02_09_18_29_12.jpg"))),
+                        Tuple.tuple("2016_03_09", new HashSet<>(Arrays.asList("2016_03_09_18_29_12.jpg"))));
     }
 
     @Test
     public void testGroupFileNamesByDayWithEmptyList() throws Exception {
         List<String> fileList = Collections.EMPTY_LIST;
-        Map<String, Set<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
+        Set<ValidFileNamesOfADay> resultMap = fileNameService.groupFileNamesByDay(fileList);
         Assertions.assertThat(resultMap.isEmpty());
     }
 
-    @Test
+    @Test(expected = IllegalDayStringException.class)
     public void testGroupFileNamesByDayWithIllegalFileName() throws Exception {
         List<String> fileList = Arrays.asList(
                 "2017_02_12_18_29_12.jpg",
@@ -114,23 +98,6 @@ public class FileNameServiceTest {
                 "201702_11_15_38_30.jpg",
                 "2017_023_10_23_06_00.jpg",
                 "2017_023_10_2306_00.jpg");
-        Map<String, Set<String>> resultMap = fileNameService.groupFileNamesByDay(fileList);
-
-        Assertions.assertThat(resultMap).containsOnlyKeys("2017_02_12", "2017_02_10", "undefined");
-        Assertions.assertThat(resultMap.get("2017_02_12"))
-                .contains(
-                        "2017_02_12_18_29_12.jpg",
-                        "2017_02_12_07_36_49.jpg"
-                );
-        Assertions.assertThat(resultMap.get("2017_02_10"))
-                .contains(
-                        "2017_02_10_23_06_00.jpg"
-                );
-        Assertions.assertThat(resultMap.get("undefined"))
-                .contains(
-                        "201702_11_15_38_30.jpg",
-                        "2017_023_10_23_06_00.jpg",
-                        "2017_023_10_2306_00.jpg"
-                );
+        fileNameService.groupFileNamesByDay(fileList);
     }
 }

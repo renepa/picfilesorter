@@ -16,18 +16,25 @@ public class FileNameService {
         return Collections.EMPTY_LIST;
     }
 
-    public Map<String, Set<String>> groupFileNamesByDay(List<String> fileNames) {
+    public Set<ValidFileNamesOfADay> groupFileNamesByDay(List<String> fileNames) {
         Map<String, Set<String>> resultMap = new HashMap<>();
         for (String fileName : fileNames) {
             String dateOfFileName = getDateOfFileName(fileName);
             addFileNameToMapByDateOfFile(resultMap, fileName, dateOfFileName);
         }
-        return resultMap;
+        return convertMapToValidFileNamesOfDaySet(resultMap);
+    }
+
+    private Set<ValidFileNamesOfADay> convertMapToValidFileNamesOfDaySet(Map<String, Set<String>> map) {
+        return map.entrySet().stream()
+                .map(entry ->
+                        ValidFileNamesOfADay.createValidFileNamesOfDay(entry.getKey(), new HashSet<>(entry.getValue())))
+                .collect(Collectors.toSet());
     }
 
     private void addFileNameToMapByDateOfFile(Map<String, Set<String>> resultMap, String fileName, String dateOfFileName) {
         if (!resultMap.containsKey(dateOfFileName)) {
-            resultMap.put(dateOfFileName, new HashSet<String>(Arrays.asList(fileName)));
+            resultMap.put(dateOfFileName, new HashSet<>(Arrays.asList(fileName)));
         } else {
             resultMap.get(dateOfFileName).add(fileName);
         }
