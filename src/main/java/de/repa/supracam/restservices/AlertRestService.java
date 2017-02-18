@@ -13,7 +13,7 @@ public class AlertRestService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(method = RequestMethod.GET, path = "/camAlert")
-    public String camMovingAlert(Object body) {
+    public String camMovingAlert() {
         logger.info("Received rest request for cam alert");
         return "alert received";
     }

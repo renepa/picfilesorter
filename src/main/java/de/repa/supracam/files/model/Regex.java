@@ -1,4 +1,4 @@
-package de.repa.supracam.files;
+package de.repa.supracam.files.model;
 
 public final class Regex {
     public static final String DATE_REGEX =

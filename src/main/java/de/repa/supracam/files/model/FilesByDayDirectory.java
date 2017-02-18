@@ -1,15 +1,15 @@
-package de.repa.supracam.files;
+package de.repa.supracam.files.model;
 
-import de.repa.supracam.files.exceptions.IllegalDayStringException;
+import de.repa.supracam.files.model.exceptions.IllegalDayStringException;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ValidFileNamesOfADay {
+public class FilesByDayDirectory {
     private String day;
     private Set<ValidFileName> fileNames = new HashSet<>();
 
-    private ValidFileNamesOfADay(String validDayString) {
+    private FilesByDayDirectory(String validDayString) {
         this.day = validDayString;
     }
 
@@ -29,9 +29,9 @@ public class ValidFileNamesOfADay {
         return new HashSet<>(this.fileNames);
     }
 
-    public static ValidFileNamesOfADay createValidFileNamesOfDay(String validDayString) throws IllegalDayStringException {
+    public static FilesByDayDirectory createValidFileNamesOfDay(String validDayString) throws IllegalDayStringException {
         if (validateDay(validDayString)) {
-            return new ValidFileNamesOfADay(validDayString);
+            return new FilesByDayDirectory(validDayString);
         }
         throw new IllegalDayStringException(validDayString);
     }

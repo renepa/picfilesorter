@@ -1,4 +1,4 @@
-package de.repa.supracam.files.exceptions;
+package de.repa.supracam.files.model.exceptions;
 
 public class IllegalFileNameException extends RuntimeException {
     public IllegalFileNameException(String illegalFileName) {

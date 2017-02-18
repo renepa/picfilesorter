@@ -1,6 +1,6 @@
-package de.repa.supracam.files;
+package de.repa.supracam.files.model;
 
-import de.repa.supracam.files.exceptions.IllegalFileNameException;
+import de.repa.supracam.files.model.exceptions.IllegalFileNameException;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
