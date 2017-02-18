@@ -1,51 +1,36 @@
 package de.repa.supracam.ftp;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class FileNameService {
 
-    public List<String> filerValidFileNames(List<String> fileNamesToValidate) {
-        if (fileNamesToValidate != null && !fileNamesToValidate.isEmpty()) {
-            return fileNamesToValidate.stream()
-                    .filter(fileName -> fileName.matches(FileNameRegexes.FILE_REGEX))
-                    .collect(Collectors.toList());
+    public List<ValidFileName> filerValidFileNames(List<String> fileNamesToValidate) {
+        List<ValidFileName> resultList = new ArrayList<>();
+        if (fileNamesToValidate != null) {
+            for (String fileName : fileNamesToValidate) {
+                Optional<ValidFileName> build = ValidFileName.builder().build(fileName);
+                if (build.isPresent()) {
+                    resultList.add(build.get());
+                }
+            }
         }
-        return Collections.EMPTY_LIST;
+        return resultList;
     }
 
-    public Set<ValidFileNamesOfADay> groupFileNamesByDay(List<String> fileNames) {
-        Map<String, Set<String>> resultMap = new HashMap<>();
-        for (String fileName : fileNames) {
-            String dateOfFileName = getDateOfFileName(fileName);
-            addFileNameToMapByDateOfFile(resultMap, fileName, dateOfFileName);
+    public Set<ValidFileNamesOfADay> groupFileNamesByDay(List<ValidFileName> fileNames) {
+        Map<String, ValidFileNamesOfADay> tempOrderMap = new HashMap<>();
+        Set<ValidFileNamesOfADay> resultSet = new HashSet<>();
+        for (ValidFileName fileName : fileNames) {
+            String dayString = fileName.getDayString();
+            if (!tempOrderMap.containsKey(dayString)) {
+                ValidFileNamesOfADay validFileNamesOfDay = ValidFileNamesOfADay.createValidFileNamesOfDay(dayString);
+                validFileNamesOfDay.addValidFileName(fileName);
+                resultSet.add(validFileNamesOfDay);
+                tempOrderMap.put(dayString, validFileNamesOfDay);
+            } else {
+                tempOrderMap.get(dayString).addValidFileName(fileName);
+            }
         }
-        return convertMapToValidFileNamesOfDaySet(resultMap);
-    }
-
-    private Set<ValidFileNamesOfADay> convertMapToValidFileNamesOfDaySet(Map<String, Set<String>> map) {
-        return map.entrySet().stream()
-                .map(entry ->
-                        ValidFileNamesOfADay.createValidFileNamesOfDay(entry.getKey(), new HashSet<>(entry.getValue())))
-                .collect(Collectors.toSet());
-    }
-
-    private void addFileNameToMapByDateOfFile(Map<String, Set<String>> resultMap, String fileName, String dateOfFileName) {
-        if (!resultMap.containsKey(dateOfFileName)) {
-            resultMap.put(dateOfFileName, new HashSet<>(Arrays.asList(fileName)));
-        } else {
-            resultMap.get(dateOfFileName).add(fileName);
-        }
-    }
-
-    private String getDateOfFileName(String fileName) {
-        Pattern datePatter = Pattern.compile(FileNameRegexes.DATE_REGEX);
-        Matcher matcher = datePatter.matcher(fileName);
-        if (matcher.find()) {
-            return matcher.group();
-        }
-        return "undefined";
+        return resultSet;
     }
 }
