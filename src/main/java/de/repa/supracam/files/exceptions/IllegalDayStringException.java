@@ -1,4 +1,4 @@
-package de.repa.supracam.ftp;
+package de.repa.supracam.files.exceptions;
 
 public class IllegalDayStringException extends RuntimeException {
     public IllegalDayStringException(String illegalDayString) {

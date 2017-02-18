@@ -1,4 +1,6 @@
-package de.repa.supracam.ftp;
+package de.repa.supracam.files;
+
+import de.repa.supracam.files.exceptions.IllegalFileNameException;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -20,7 +22,7 @@ public class ValidFileName {
     }
 
     public String getDayString() {
-        Pattern datePatter = Pattern.compile(FileNameRegexes.DATE_REGEX);
+        Pattern datePatter = Pattern.compile(Regex.DATE_REGEX);
         Matcher matcher = datePatter.matcher(this.value);
         if (matcher.find()) {
             return matcher.group();
@@ -33,7 +35,7 @@ public class ValidFileName {
         }
 
         public Optional<ValidFileName> build(String value) {
-            if (value != null && value.matches(FileNameRegexes.FILE_REGEX)) {
+            if (value != null && value.matches(Regex.FILE_REGEX)) {
                 return Optional.of(new ValidFileName(value));
             }
             return Optional.empty();

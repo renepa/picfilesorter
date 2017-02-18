@@ -1,4 +1,6 @@
-package de.repa.supracam.ftp;
+package de.repa.supracam.files;
+
+import de.repa.supracam.files.exceptions.IllegalDayStringException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +37,6 @@ public class ValidFileNamesOfADay {
     }
 
     private static boolean validateDay(String dayString) {
-        return dayString.matches(FileNameRegexes.DATE_REGEX);
+        return dayString.matches(Regex.DATE_REGEX);
     }
 }

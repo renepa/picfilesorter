@@ -1,9 +1,9 @@
 package de.repa.supracam.ftp;
 
+import de.repa.supracam.files.exceptions.IllegalDayStringException;
+import de.repa.supracam.files.ValidFileNamesOfADay;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-
-import java.util.Optional;
 
 import static de.repa.supracam.ftp.FileNameTestHelper.createAssertedValidFileName;
 

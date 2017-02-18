@@ -1,4 +1,4 @@
-package de.repa.supracam.ftp;
+package de.repa.supracam.files;
 
 import java.util.*;
 

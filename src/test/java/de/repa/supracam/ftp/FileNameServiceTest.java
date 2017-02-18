@@ -1,5 +1,8 @@
 package de.repa.supracam.ftp;
 
+import de.repa.supracam.files.FileNameService;
+import de.repa.supracam.files.ValidFileName;
+import de.repa.supracam.files.ValidFileNamesOfADay;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

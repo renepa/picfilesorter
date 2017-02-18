@@ -1,6 +1,6 @@
-package de.repa.supracam.ftp;
+package de.repa.supracam.files;
 
-public final class FileNameRegexes {
+public final class Regex {
     public static final String DATE_REGEX =
             "^[1-2][0-9]{3}"
                     + "_(0?[1-9]|[1][0-2])"
@@ -13,6 +13,6 @@ public final class FileNameRegexes {
 
     public static final String FILE_REGEX = DATE_REGEX + "_" + TIME_REGEX + "\\.jpg";
 
-    private FileNameRegexes() {
+    private Regex() {
     }
 }
