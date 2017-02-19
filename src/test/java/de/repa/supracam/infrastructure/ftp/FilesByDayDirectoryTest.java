@@ -1,7 +1,7 @@
 package de.repa.supracam.infrastructure.ftp;
 
-import de.repa.supracam.files.model.exceptions.IllegalDayStringException;
 import de.repa.supracam.files.model.FilesByDayDirectory;
+import de.repa.supracam.files.model.exceptions.IllegalDayStringException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -16,10 +16,14 @@ public class FilesByDayDirectoryTest {
         Assertions.assertThat(validFileNamesOfDay.getDay()).isEqualTo(day);
     }
 
-    @Test(expected = IllegalDayStringException.class)
+    @Test
     public void testCreateWithInvalidDayString() throws Exception {
         String day = "201702_15";
-        FilesByDayDirectory.createValidFileNamesOfDay(day);
+        try {
+            FilesByDayDirectory.createValidFileNamesOfDay(day);
+        } catch (IllegalDayStringException e) {
+            Assertions.assertThat(e.getMessage()).contains(day);
+        }
     }
 
     @Test

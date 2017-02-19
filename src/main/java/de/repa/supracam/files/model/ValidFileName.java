@@ -1,7 +1,5 @@
 package de.repa.supracam.files.model;
 
-import de.repa.supracam.files.model.exceptions.IllegalFileNameException;
-
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,10 +22,8 @@ public class ValidFileName {
     public String getDayString() {
         Pattern datePatter = Pattern.compile(Regex.DATE_REGEX);
         Matcher matcher = datePatter.matcher(this.value);
-        if (matcher.find()) {
-            return matcher.group();
-        }
-        throw new IllegalFileNameException(value);
+        matcher.find();
+        return matcher.group();
     }
 
     public static class Builder {

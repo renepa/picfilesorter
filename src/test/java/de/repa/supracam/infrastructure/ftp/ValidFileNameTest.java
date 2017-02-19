@@ -75,6 +75,12 @@ public class ValidFileNameTest {
     }
 
     @Test
+    public void testBuildWithNullDate() throws Exception {
+        Assertions.assertThat(ValidFileName.builder().build(null)
+                .isPresent()).isFalse();
+    }
+
+    @Test
     public void testGetDayString() throws Exception {
         Optional<ValidFileName> build = ValidFileName.builder().build("2017_05_11_18_02_59.jpg");
         Assertions.assertThat(build.isPresent()).isTrue();

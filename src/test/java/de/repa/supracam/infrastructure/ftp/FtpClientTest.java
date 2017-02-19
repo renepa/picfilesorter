@@ -20,11 +20,12 @@ public class FtpClientTest {
 
     private Session sessionMock;
     private FtpClient ftpClient;
+    SessionFactory sessionFactoryMock;
 
     @Before
     public void init() {
         this.sessionMock = Mockito.mock(Session.class);
-        SessionFactory sessionFactoryMock = Mockito.mock(SessionFactory.class);
+        this.sessionFactoryMock = Mockito.mock(SessionFactory.class);
         Mockito.when(sessionFactoryMock.getSession()).thenReturn(sessionMock);
         ftpClient = new FtpClient(sessionFactoryMock);
     }
@@ -143,5 +144,21 @@ public class FtpClientTest {
         ftpClient.cutFilesFromRootToDayDirectory(new HashSet<FilesByDayDirectory>(Arrays.asList(validFileNamesOfDay)));
 
         Mockito.verify(sessionMock, Mockito.times(0)).write(Mockito.anyObject(), Mockito.anyString());
+    }
+
+    @Test
+    public void testCutFilesWithConnectionError() throws Exception {
+        FilesByDayDirectory validFileNamesOfDay = FilesByDayDirectory.createValidFileNamesOfDay("2017_02_19");
+        validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_18_09_22.jpg"));
+        validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_22_09_22.jpg"));
+
+        Mockito.when(sessionMock.exists(Mockito.anyString())).thenThrow(IOException.class);
+
+        try {
+            ftpClient.cutFilesFromRootToDayDirectory(new HashSet<FilesByDayDirectory>(Arrays.asList(validFileNamesOfDay)));
+            Assertions.fail("Exception should be thrown");
+        } catch (FileClientException e) {
+            Assertions.assertThat(e.getCause()).isInstanceOf(IOException.class);
+        }
     }
 }
