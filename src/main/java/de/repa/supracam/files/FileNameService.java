@@ -9,19 +9,6 @@ import java.util.*;
 @Service
 public class FileNameService {
 
-    public List<ValidFileName> filerValidFileNames(List<String> fileNamesToValidate) {
-        List<ValidFileName> resultList = new ArrayList<>();
-        if (fileNamesToValidate != null) {
-            for (String fileName : fileNamesToValidate) {
-                Optional<ValidFileName> build = ValidFileName.builder().build(fileName);
-                if (build.isPresent()) {
-                    resultList.add(build.get());
-                }
-            }
-        }
-        return resultList;
-    }
-
     public Set<FilesByDayDirectory> groupFileNamesByDay(List<ValidFileName> fileNames) {
         Map<String, FilesByDayDirectory> tempOrderMap = new HashMap<>();
         Set<FilesByDayDirectory> resultSet = new HashSet<>();

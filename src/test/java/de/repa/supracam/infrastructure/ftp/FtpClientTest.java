@@ -1,6 +1,7 @@
 package de.repa.supracam.infrastructure.ftp;
 
 import de.repa.supracam.files.model.FilesByDayDirectory;
+import de.repa.supracam.files.model.ValidFileName;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +41,13 @@ public class FtpClientTest {
                         "cam/2017_02_12_07_36_49.jpg",
                         "cam/2017_02_10_23_05_00.jpg",
                         "cam/2017_02_11_15_38_30.jpg",
-                        "cam/2017_02_11_15_46_18.jpg"
+                        "cam/2017_02_11_15_46_18.jpg",
+                        "cam/2017_02_11_1546_18.jpg",
+                        "cam/2017_02_11_15_46_18.jpog",
+                        "cam/201702_11_15_46_18.jpg"
                 });
-        List<String> resultList = ftpClient.loadNamesOfPicturesInRootDir();
-        Assertions.assertThat(resultList).contains(
+        List<ValidFileName> resultList = ftpClient.loadNamesOfPicturesInRootDir();
+        Assertions.assertThat(resultList).extracting("value").containsExactlyInAnyOrder(
                 "2017_02_12_18_29_12.jpg",
                 "2017_02_12_07_36_49.jpg",
                 "2017_02_10_23_05_00.jpg",
@@ -55,7 +59,7 @@ public class FtpClientTest {
     @Test
     public void testGetEmptyListOfFiles() throws Exception {
         Mockito.when(sessionMock.listNames(Mockito.anyString())).thenReturn(new String[]{});
-        List<String> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
+        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
     }
@@ -63,7 +67,7 @@ public class FtpClientTest {
     @Test
     public void testGetEmptyListOfFilesWhenResultNull() throws Exception {
         Mockito.when(sessionMock.listNames(Mockito.anyString())).thenReturn(null);
-        List<String> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
+        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
     }
@@ -71,7 +75,7 @@ public class FtpClientTest {
     @Test
     public void testFtpConnectionError() throws Exception {
         Mockito.when(sessionMock.listNames(Mockito.anyString())).thenThrow(IOException.class);
-        List<String> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
+        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
     }

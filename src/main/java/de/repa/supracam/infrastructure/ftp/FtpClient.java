@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,10 +27,11 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
         this.ftpSessionFactory = sessionFactory;
     }
 
-    public List<String> loadNamesOfPicturesInRootDir() {
+    public List<ValidFileName> loadNamesOfPicturesInRootDir() {
         try (Session ftpSession = ftpSessionFactory.getSession()) {
             String[] fileNames = ftpSession.listNames(PATH);
-            return extractFileNames(fileNames);
+            List<String> extractedFilenames = extractFileNames(fileNames);
+            return filerValidFileNames(extractedFilenames);
         } catch (IOException e) {
             return Collections.emptyList();
         }
@@ -75,5 +73,18 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
                     .collect(Collectors.toList());
         }
         return Collections.EMPTY_LIST;
+    }
+
+    private List<ValidFileName> filerValidFileNames(List<String> fileNamesToValidate) {
+        List<ValidFileName> resultList = new ArrayList<>();
+        if (fileNamesToValidate != null) {
+            for (String fileName : fileNamesToValidate) {
+                Optional<ValidFileName> build = ValidFileName.builder().build(fileName);
+                if (build.isPresent()) {
+                    resultList.add(build.get());
+                }
+            }
+        }
+        return resultList;
     }
 }
