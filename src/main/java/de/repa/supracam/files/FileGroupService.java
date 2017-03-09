@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class FileNameService {
+public class FileGroupService {
 
     public Set<FilesByDayDirectory> groupFileNamesByDay(List<ValidFileName> fileNames) {
         Map<String, FilesByDayDirectory> tempOrderMap = new HashMap<>();

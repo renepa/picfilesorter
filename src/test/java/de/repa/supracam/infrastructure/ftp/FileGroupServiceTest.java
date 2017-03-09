@@ -1,6 +1,6 @@
 package de.repa.supracam.infrastructure.ftp;
 
-import de.repa.supracam.files.FileNameService;
+import de.repa.supracam.files.FileGroupService;
 import de.repa.supracam.files.model.ValidFileName;
 import de.repa.supracam.files.model.FilesByDayDirectory;
 import org.assertj.core.api.Assertions;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 import static de.repa.supracam.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
 
-public class FileNameServiceTest {
+public class FileGroupServiceTest {
 
-    private FileNameService fileNameService = new FileNameService();
+    private FileGroupService fileGroupService = new FileGroupService();
 
     @Test
     public void testGroupFileNamesByDay() throws Exception {
@@ -30,7 +30,7 @@ public class FileNameServiceTest {
                 createAssertedValidFileName("2017_02_09_18_29_12.jpg"),
                 createAssertedValidFileName("2016_03_09_18_29_12.jpg"),
                 createAssertedValidFileName("2017_02_10_23_05_00.jpg"));
-        Set<FilesByDayDirectory> resultSet = fileNameService.groupFileNamesByDay(fileList);
+        Set<FilesByDayDirectory> resultSet = fileGroupService.groupFileNamesByDay(fileList);
         Assertions.assertThat(resultSet)
                 .extracting("day")
                 .contains("2017_02_12", "2017_02_10", "2017_02_11", "2017_02_09", "2016_03_09");
@@ -67,7 +67,7 @@ public class FileNameServiceTest {
     @Test
     public void testGroupFileNamesByDayWithEmptyList() throws Exception {
         List<ValidFileName> fileList = Collections.EMPTY_LIST;
-        Set<FilesByDayDirectory> resultMap = fileNameService.groupFileNamesByDay(fileList);
+        Set<FilesByDayDirectory> resultMap = fileGroupService.groupFileNamesByDay(fileList);
         Assertions.assertThat(resultMap.isEmpty());
     }
 }
