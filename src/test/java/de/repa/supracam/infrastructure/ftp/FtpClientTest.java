@@ -2,13 +2,13 @@ package de.repa.supracam.infrastructure.ftp;
 
 import de.repa.supracam.files.model.FilesByDayDirectory;
 import de.repa.supracam.files.model.ValidFileName;
+import org.apache.commons.net.ftp.FTPClient;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.springframework.integration.file.remote.session.Session;
-import org.springframework.integration.file.remote.session.SessionFactory;
+import org.springframework.integration.ftp.session.AbstractFtpSessionFactory;
+import org.springframework.integration.ftp.session.FtpSession;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,24 +16,28 @@ import java.util.HashSet;
 import java.util.List;
 
 import static de.repa.supracam.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
+import static org.mockito.Mockito.*;
 
 public class FtpClientTest {
 
-    private Session sessionMock;
+    private FtpSession sessionMock;
     private FtpClient ftpClient;
-    SessionFactory sessionFactoryMock;
+    AbstractFtpSessionFactory sessionFactoryMock;
 
     @Before
-    public void init() {
-        this.sessionMock = Mockito.mock(Session.class);
-        this.sessionFactoryMock = Mockito.mock(SessionFactory.class);
-        Mockito.when(sessionFactoryMock.getSession()).thenReturn(sessionMock);
-        ftpClient = new FtpClient(sessionFactoryMock);
+    public void init() throws IOException {
+        this.sessionMock = mock(FtpSession.class);
+        this.sessionFactoryMock = mock(AbstractFtpSessionFactory.class);
+        when(sessionFactoryMock.getSession()).thenReturn(sessionMock);
+        this.ftpClient = new FtpClient(sessionFactoryMock);
+
+        FTPClient ftpClientMock = mock(FTPClient.class);
+        when(sessionMock.getClientInstance()).thenReturn(ftpClientMock);
     }
 
     @Test
     public void testGetAllFileNames() throws Exception {
-        Mockito.when(sessionMock.listNames(Mockito.anyString()))
+        when(sessionMock.listNames(anyString()))
                 .thenReturn(new String[]{
                         "cam/.",
                         "cam/..",
@@ -58,7 +62,7 @@ public class FtpClientTest {
 
     @Test
     public void testGetEmptyListOfFiles() throws Exception {
-        Mockito.when(sessionMock.listNames(Mockito.anyString())).thenReturn(new String[]{});
+        when(sessionMock.listNames(anyString())).thenReturn(new String[]{});
         List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
@@ -66,7 +70,7 @@ public class FtpClientTest {
 
     @Test
     public void testGetEmptyListOfFilesWhenResultNull() throws Exception {
-        Mockito.when(sessionMock.listNames(Mockito.anyString())).thenReturn(null);
+        when(sessionMock.listNames(anyString())).thenReturn(null);
         List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
@@ -74,7 +78,7 @@ public class FtpClientTest {
 
     @Test
     public void testFtpConnectionError() throws Exception {
-        Mockito.when(sessionMock.listNames(Mockito.anyString())).thenThrow(IOException.class);
+        when(sessionMock.listNames(anyString())).thenThrow(IOException.class);
         List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
@@ -91,24 +95,23 @@ public class FtpClientTest {
         validFileNamesOfDay2.addValidFileName(createAssertedValidFileName("2017_05_22_10_44_25.jpg"));
 
         ArgumentCaptor<String> mkDirCaptor = ArgumentCaptor.forClass(String.class);
-        Mockito.when(sessionMock.mkdir(mkDirCaptor.capture())).thenReturn(true);
+        when(sessionMock.mkdir(mkDirCaptor.capture())).thenReturn(true);
 
-        ArgumentCaptor<String> writeCap = ArgumentCaptor.forClass(String.class);
-        Mockito.doNothing().when(sessionMock).write(Mockito.anyObject(), writeCap.capture());
+        FTPClient ftpSessionClient = sessionMock.getClientInstance();
+        ArgumentCaptor<String> renameCap = ArgumentCaptor.forClass(String.class);
+        when(ftpSessionClient.rename(anyObject(), renameCap.capture())).thenReturn(true);
 
-        Mockito.when(sessionMock.exists(Mockito.contains("jpg"))).thenReturn(true);
+        when(sessionMock.exists(contains("jpg"))).thenReturn(true);
 
         ftpClient.cutFilesFromRootToDayDirectory(
-                new HashSet<FilesByDayDirectory>(Arrays.asList(validFileNamesOfDay, validFileNamesOfDay2)));
+                new HashSet(Arrays.asList(validFileNamesOfDay, validFileNamesOfDay2)));
 
-        Assertions.assertThat(mkDirCaptor.getAllValues()).contains("cam/2017_02_19", "cam/2017_05_22");
+        Assertions.assertThat(mkDirCaptor.getAllValues()).containsExactlyInAnyOrder("cam/2017_02_19", "cam/2017_05_22");
 
-        Assertions.assertThat(writeCap.getAllValues())
-                .contains(
-                        "cam/2017_05_22/2017_05_22_11_22_28.jpg",
-                        "cam/2017_05_22/2017_05_22_10_44_25.jpg",
-                        "cam/2017_02_19/2017_02_19_18_09_22.jpg",
-                        "cam/2017_02_19/2017_02_19_22_09_22.jpg");
+        verify(ftpSessionClient).rename(eq("cam/2017_05_22_11_22_28.jpg"), eq("cam/2017_05_22/2017_05_22_11_22_28.jpg"));
+        verify(ftpSessionClient).rename(eq("cam/2017_05_22_10_44_25.jpg"), eq("cam/2017_05_22/2017_05_22_10_44_25.jpg"));
+        verify(ftpSessionClient).rename(eq("cam/2017_02_19_18_09_22.jpg"), eq("cam/2017_02_19/2017_02_19_18_09_22.jpg"));
+        verify(ftpSessionClient).rename(eq("cam/2017_02_19_22_09_22.jpg"), eq("cam/2017_02_19/2017_02_19_22_09_22.jpg"));
     }
 
     @Test
@@ -117,11 +120,11 @@ public class FtpClientTest {
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_18_09_22.jpg"));
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_22_09_22.jpg"));
 
-        Mockito.when(sessionMock.exists(Mockito.eq("cam/2017_02_19"))).thenReturn(true);
+        when(sessionMock.exists(eq("cam/2017_02_19"))).thenReturn(true);
 
         ftpClient.cutFilesFromRootToDayDirectory(new HashSet<FilesByDayDirectory>(Arrays.asList(validFileNamesOfDay)));
 
-        Mockito.verify(sessionMock, Mockito.times(0)).mkdir(Mockito.anyString());
+        verify(sessionMock, times(0)).mkdir(anyString());
     }
 
     @Test
@@ -130,11 +133,11 @@ public class FtpClientTest {
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_18_09_22.jpg"));
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_22_09_22.jpg"));
 
-        Mockito.when(sessionMock.exists(Mockito.eq("cam/2017_02_19"))).thenReturn(false);
+        when(sessionMock.exists(eq("cam/2017_02_19"))).thenReturn(false);
 
         ftpClient.cutFilesFromRootToDayDirectory(new HashSet<FilesByDayDirectory>(Arrays.asList(validFileNamesOfDay)));
 
-        Mockito.verify(sessionMock, Mockito.times(1)).mkdir(Mockito.anyString());
+        verify(sessionMock, times(1)).mkdir(anyString());
     }
 
     @Test
@@ -143,11 +146,11 @@ public class FtpClientTest {
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_18_09_22.jpg"));
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_22_09_22.jpg"));
 
-        Mockito.when(sessionMock.exists(Mockito.eq("cam/2017_02_19"))).thenReturn(true);
+        when(sessionMock.exists(eq("cam/2017_02_19"))).thenReturn(true);
 
         ftpClient.cutFilesFromRootToDayDirectory(new HashSet<FilesByDayDirectory>(Arrays.asList(validFileNamesOfDay)));
 
-        Mockito.verify(sessionMock, Mockito.times(0)).write(Mockito.anyObject(), Mockito.anyString());
+        verify(sessionMock, times(0)).write(anyObject(), anyString());
     }
 
     @Test
@@ -156,7 +159,7 @@ public class FtpClientTest {
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_18_09_22.jpg"));
         validFileNamesOfDay.addValidFileName(createAssertedValidFileName("2017_02_19_22_09_22.jpg"));
 
-        Mockito.when(sessionMock.exists(Mockito.anyString())).thenThrow(IOException.class);
+        when(sessionMock.exists(anyString())).thenThrow(IOException.class);
 
         try {
             ftpClient.cutFilesFromRootToDayDirectory(new HashSet<FilesByDayDirectory>(Arrays.asList(validFileNamesOfDay)));

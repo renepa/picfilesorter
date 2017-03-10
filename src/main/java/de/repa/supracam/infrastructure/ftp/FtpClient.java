@@ -4,13 +4,14 @@ import de.repa.supracam.files.model.FilesByDayDirectory;
 import de.repa.supracam.files.model.ValidFileName;
 import de.repa.supracam.infrastructure.FileLoadClient;
 import de.repa.supracam.infrastructure.FileWriteClient;
+import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.file.remote.session.Session;
-import org.springframework.integration.file.remote.session.SessionFactory;
+import org.springframework.integration.ftp.session.AbstractFtpSessionFactory;
+import org.springframework.integration.ftp.session.FtpSession;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,11 +21,11 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
     //TODO: properties file
     private static final String PATH = "cam";
 
-    private SessionFactory ftpSessionFactory;
+    private AbstractFtpSessionFactory<FTPClient> ftpSessionFactory;
 
     @Autowired
-    public FtpClient(SessionFactory sessionFactory) {
-        this.ftpSessionFactory = sessionFactory;
+    public FtpClient(AbstractFtpSessionFactory<FTPClient> ftpSessionFactory) {
+        this.ftpSessionFactory = ftpSessionFactory;
     }
 
     public List<ValidFileName> loadNamesOfPicturesInRootDir() {
@@ -38,7 +39,7 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
     }
 
     public void cutFilesFromRootToDayDirectory(Set<FilesByDayDirectory> fileDirectories) throws FileClientException {
-        try (Session ftpSession = ftpSessionFactory.getSession()) {
+        try (FtpSession ftpSession = ftpSessionFactory.getSession()) {
             for (FilesByDayDirectory fileDirectory : fileDirectories) {
                 createDirectoryIfNotExists(ftpSession, fileDirectory.getDay());
                 cutFilesIntoDirectory(ftpSession, fileDirectory.getFileNames(), fileDirectory.getDay());
@@ -48,13 +49,13 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
         }
     }
 
-    private void cutFilesIntoDirectory(Session ftpSession, Set<ValidFileName> validFileNames, String directoryName) throws IOException {
-        String directoryPath = PATH + "/" + directoryName;
+    private void cutFilesIntoDirectory(FtpSession ftpSession, Set<ValidFileName> validFileNames, String directoryName) throws IOException {
+        String targetDirectoryPath = PATH + "/" + directoryName;
         for (ValidFileName validFileName : validFileNames) {
             String sourcePath = PATH + "/" + validFileName.getValue();
             if (ftpSession.exists(sourcePath)) {
-                InputStream inputStream = ftpSession.readRaw(sourcePath);
-                ftpSession.write(inputStream, directoryPath + "/" + validFileName.getValue());
+                String targetPath = targetDirectoryPath + "/" + validFileName.getValue();
+                ftpSession.getClientInstance().rename(sourcePath, targetPath);
             }
         }
     }
