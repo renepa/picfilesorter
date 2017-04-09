@@ -1,9 +1,13 @@
 package de.repa.supracam.infrastructure.ftp;
 
 import de.repa.supracam.files.model.FilesByDayDirectory;
+import de.repa.supracam.files.model.Regex;
 import de.repa.supracam.files.model.exceptions.IllegalDayStringException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static de.repa.supracam.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
 

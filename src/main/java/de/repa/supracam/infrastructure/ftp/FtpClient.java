@@ -28,7 +28,7 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
         this.ftpSessionFactory = ftpSessionFactory;
     }
 
-    public List<ValidFileName> loadNamesOfPicturesInRootDir() {
+    public List<ValidFileName> loadValidFileNamesOfPicturesInRootDir() {
         try (Session ftpSession = ftpSessionFactory.getSession()) {
             String[] fileNames = ftpSession.listNames(PATH);
             List<String> extractedFilenames = extractFileNames(fileNames);

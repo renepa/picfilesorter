@@ -50,7 +50,7 @@ public class FtpClientTest {
                         "cam/2017_02_11_15_46_18.jpog",
                         "cam/201702_11_15_46_18.jpg"
                 });
-        List<ValidFileName> resultList = ftpClient.loadNamesOfPicturesInRootDir();
+        List<ValidFileName> resultList = ftpClient.loadValidFileNamesOfPicturesInRootDir();
         Assertions.assertThat(resultList).extracting("value").containsExactlyInAnyOrder(
                 "2017_02_12_18_29_12.jpg",
                 "2017_02_12_07_36_49.jpg",
@@ -63,7 +63,7 @@ public class FtpClientTest {
     @Test
     public void testGetEmptyListOfFiles() throws Exception {
         when(sessionMock.listNames(anyString())).thenReturn(new String[]{});
-        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
+        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadValidFileNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
     }
@@ -71,7 +71,7 @@ public class FtpClientTest {
     @Test
     public void testGetEmptyListOfFilesWhenResultNull() throws Exception {
         when(sessionMock.listNames(anyString())).thenReturn(null);
-        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
+        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadValidFileNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
     }
@@ -79,7 +79,7 @@ public class FtpClientTest {
     @Test
     public void testFtpConnectionError() throws Exception {
         when(sessionMock.listNames(anyString())).thenThrow(IOException.class);
-        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadNamesOfPicturesInRootDir();
+        List<ValidFileName> validNamesOfPicturesInRootDir = ftpClient.loadValidFileNamesOfPicturesInRootDir();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isNotNull();
         Assertions.assertThat(validNamesOfPicturesInRootDir).isEmpty();
     }
