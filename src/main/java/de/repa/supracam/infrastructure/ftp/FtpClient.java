@@ -2,9 +2,11 @@ package de.repa.supracam.infrastructure.ftp;
 
 import de.repa.supracam.files.model.FilesByDayDirectory;
 import de.repa.supracam.files.model.ValidFileName;
-import de.repa.supracam.infrastructure.FileLoadClient;
-import de.repa.supracam.infrastructure.FileWriteClient;
+import de.repa.supracam.files.FileLoadClient;
+import de.repa.supracam.files.FileWriteClient;
 import org.apache.commons.net.ftp.FTPClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.file.remote.session.Session;
 import org.springframework.integration.ftp.session.AbstractFtpSessionFactory;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class FtpClient implements FileLoadClient, FileWriteClient {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     //TODO: properties file
     private static final String PATH = "cam";
@@ -51,18 +55,20 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
 
     private void cutFilesIntoDirectory(FtpSession ftpSession, Set<ValidFileName> validFileNames, String directoryName) throws IOException {
         String targetDirectoryPath = PATH + "/" + directoryName;
+        logger.debug("Start to cut files for day {} with {} files", directoryName, validFileNames.size());
         for (ValidFileName validFileName : validFileNames) {
             String sourcePath = PATH + "/" + validFileName.getValue();
-            if (ftpSession.exists(sourcePath)) {
-                String targetPath = targetDirectoryPath + "/" + validFileName.getValue();
-                ftpSession.getClientInstance().rename(sourcePath, targetPath);
-            }
+            String targetPath = targetDirectoryPath + "/" + validFileName.getValue();
+            ftpSession.getClientInstance().rename(sourcePath, targetPath);
+            logger.debug("Moved file: {} to {}", sourcePath, targetPath);
         }
+        logger.info("Finished cut files for day {} with {} files", directoryName, validFileNames.size());
     }
 
     private void createDirectoryIfNotExists(Session ftpSession, String dirName) throws IOException {
         if (!ftpSession.exists(PATH + "/" + dirName)) {
             ftpSession.mkdir(PATH + "/" + dirName);
+            logger.info("Created directory {}", dirName);
         }
     }
 

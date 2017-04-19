@@ -1,4 +1,4 @@
-package de.repa.supracam.infrastructure;
+package de.repa.supracam.files;
 
 import de.repa.supracam.files.model.FilesByDayDirectory;
 import de.repa.supracam.infrastructure.ftp.FileClientException;
