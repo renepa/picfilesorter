@@ -1,4 +1,4 @@
-package de.repa.supracam.files.model;
+package de.repa.filesorter.files.model;
 
 import java.util.Optional;
 import java.util.regex.Matcher;

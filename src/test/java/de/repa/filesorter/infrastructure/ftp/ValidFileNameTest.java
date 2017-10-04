@@ -1,6 +1,6 @@
-package de.repa.supracam.infrastructure.ftp;
+package de.repa.filesorter.infrastructure.ftp;
 
-import de.repa.supracam.files.model.ValidFileName;
+import de.repa.filesorter.files.model.ValidFileName;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

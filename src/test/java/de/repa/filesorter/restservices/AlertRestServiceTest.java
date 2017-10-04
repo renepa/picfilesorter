@@ -1,4 +1,4 @@
-package de.repa.supracam.restservices;
+package de.repa.filesorter.restservices;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

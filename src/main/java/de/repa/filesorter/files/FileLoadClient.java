@@ -1,6 +1,6 @@
-package de.repa.supracam.files;
+package de.repa.filesorter.files;
 
-import de.repa.supracam.files.model.ValidFileName;
+import de.repa.filesorter.files.model.ValidFileName;
 
 import java.util.List;
 

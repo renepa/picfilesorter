@@ -1,6 +1,6 @@
-package de.repa.supracam.files.model;
+package de.repa.filesorter.files.model;
 
-import de.repa.supracam.files.model.exceptions.IllegalDayStringException;
+import de.repa.filesorter.files.model.exceptions.IllegalDayStringException;
 
 import java.util.HashSet;
 import java.util.Set;

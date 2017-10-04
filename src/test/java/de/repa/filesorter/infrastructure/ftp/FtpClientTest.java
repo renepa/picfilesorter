@@ -1,7 +1,7 @@
-package de.repa.supracam.infrastructure.ftp;
+package de.repa.filesorter.infrastructure.ftp;
 
-import de.repa.supracam.files.model.FilesByDayDirectory;
-import de.repa.supracam.files.model.ValidFileName;
+import de.repa.filesorter.files.model.FilesByDayDirectory;
+import de.repa.filesorter.files.model.ValidFileName;
 import org.apache.commons.net.ftp.FTPClient;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static de.repa.supracam.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
+import static de.repa.filesorter.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
 import static org.mockito.Mockito.*;
 
 public class FtpClientTest {

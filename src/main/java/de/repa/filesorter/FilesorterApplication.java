@@ -1,4 +1,4 @@
-package de.repa.supracam;
+package de.repa.filesorter;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.boot.SpringApplication;
@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-public class AlertManagerApplication {
+public class FilesorterApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AlertManagerApplication.class, args);
+        SpringApplication.run(FilesorterApplication.class, args);
     }
 
     @Bean

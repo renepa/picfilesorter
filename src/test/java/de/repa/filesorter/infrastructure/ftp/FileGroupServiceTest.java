@@ -1,8 +1,8 @@
-package de.repa.supracam.infrastructure.ftp;
+package de.repa.filesorter.infrastructure.ftp;
 
-import de.repa.supracam.files.FileGroupService;
-import de.repa.supracam.files.model.ValidFileName;
-import de.repa.supracam.files.model.FilesByDayDirectory;
+import de.repa.filesorter.files.FileGroupService;
+import de.repa.filesorter.files.model.ValidFileName;
+import de.repa.filesorter.files.model.FilesByDayDirectory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static de.repa.supracam.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
+import static de.repa.filesorter.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
 
 public class FileGroupServiceTest {
 

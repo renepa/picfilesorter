@@ -1,10 +1,10 @@
-package de.repa.supracam;
+package de.repa.filesorter;
 
-import de.repa.supracam.files.FileGroupService;
-import de.repa.supracam.files.model.FilesByDayDirectory;
-import de.repa.supracam.files.model.ValidFileName;
-import de.repa.supracam.files.FileLoadClient;
-import de.repa.supracam.files.FileWriteClient;
+import de.repa.filesorter.files.FileGroupService;
+import de.repa.filesorter.files.model.FilesByDayDirectory;
+import de.repa.filesorter.files.model.ValidFileName;
+import de.repa.filesorter.files.FileLoadClient;
+import de.repa.filesorter.files.FileWriteClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

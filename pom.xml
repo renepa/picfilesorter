@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.repa.supracam</groupId>
-    <artifactId>alertmanager</artifactId>
+    <groupId>de.repa</groupId>
+    <artifactId>filesorer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>alertmanager</name>
+    <name>filesorter</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -60,12 +60,12 @@
                 <configuration>
                     <instrumentation>
                         <ignores>
-                            <ignore>de.repa.supracam.AlertManagerApplication</ignore>
+                            <ignore>de.repa.filesorter.FilesorterApplication</ignore>
                         </ignores>
                         <excludes>
-                            <exclude>de/repa/supracam/AlertManagerApplication.class</exclude>
-                            <exclude>de/repa/supracam/files/model/Regex.class</exclude>
-                            <exclude>de/repa/supracam/IndexRestController.class</exclude>
+                            <exclude>de/repa/filesorter/AlertManagerApplication.class</exclude>
+                            <exclude>de/repa/filesorter/files/model/Regex.class</exclude>
+                            <exclude>de/repa/filesorter/IndexRestController.class</exclude>
                             <exclude>com/example/**/*Test.class</exclude>
                         </excludes>
                     </instrumentation>

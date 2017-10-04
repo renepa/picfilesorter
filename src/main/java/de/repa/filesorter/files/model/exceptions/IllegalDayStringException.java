@@ -1,4 +1,4 @@
-package de.repa.supracam.files.model.exceptions;
+package de.repa.filesorter.files.model.exceptions;
 
 public class IllegalDayStringException extends RuntimeException {
     public IllegalDayStringException(String illegalDayString) {

@@ -1,4 +1,4 @@
-package de.repa.supracam;
+package de.repa.filesorter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
