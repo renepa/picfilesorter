@@ -55,7 +55,7 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
 
     private void cutFilesIntoDirectory(FtpSession ftpSession, Set<ValidFileName> validFileNames, String directoryName) throws IOException {
         String targetDirectoryPath = PATH + "/" + directoryName;
-        logger.debug("Start to cut files for day {} with {} files", directoryName, validFileNames.size());
+        logger.info("Start to cut files for day {} with {} files", directoryName, validFileNames.size());
         for (ValidFileName validFileName : validFileNames) {
             String sourcePath = PATH + "/" + validFileName.getValue();
             String targetPath = targetDirectoryPath + "/" + validFileName.getValue();
