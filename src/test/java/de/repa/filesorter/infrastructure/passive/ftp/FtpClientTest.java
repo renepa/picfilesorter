@@ -1,4 +1,4 @@
-package de.repa.filesorter.infrastructure.ftp;
+package de.repa.filesorter.infrastructure.passive.ftp;
 
 import de.repa.filesorter.files.model.FilesByDayDirectory;
 import de.repa.filesorter.files.model.ValidFileName;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static de.repa.filesorter.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
+import static de.repa.filesorter.infrastructure.passive.ftp.FileNameTestHelper.createAssertedValidFileName;
 import static org.mockito.Mockito.*;
 
 public class FtpClientTest {

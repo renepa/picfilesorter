@@ -1,11 +1,11 @@
-package de.repa.filesorter.infrastructure.ftp;
+package de.repa.filesorter.infrastructure.passive.ftp;
 
 import de.repa.filesorter.files.model.FilesByDayDirectory;
 import de.repa.filesorter.files.model.exceptions.IllegalDayStringException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import static de.repa.filesorter.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
+import static de.repa.filesorter.infrastructure.passive.ftp.FileNameTestHelper.createAssertedValidFileName;
 
 public class FilesByDayDirectoryTest {
 

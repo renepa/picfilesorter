@@ -1,4 +1,4 @@
-package de.repa.filesorter.restservices;
+package de.repa.filesorter.infrastructure.active;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -10,14 +10,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AlertRestServiceTest {
+public class FileGroupApplicationServiceRestAdapterTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
     @Test
     public void testCamMovingAlert() throws Exception {
-        String result = testRestTemplate.getForObject("/rest/camAlert", String.class);
+        testRestTemplate.getForObject("/rest/fileGroupService/groupByDate", String.class);
         Assertions.assertThat("alert received");
     }
 }

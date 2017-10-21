@@ -1,4 +1,4 @@
-package de.repa.filesorter.infrastructure.ftp;
+package de.repa.filesorter.infrastructure.passive.ftp;
 
 import de.repa.filesorter.files.model.ValidFileName;
 import org.assertj.core.api.Assertions;

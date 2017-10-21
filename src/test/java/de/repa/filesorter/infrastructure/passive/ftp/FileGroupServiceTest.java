@@ -1,4 +1,4 @@
-package de.repa.filesorter.infrastructure.ftp;
+package de.repa.filesorter.infrastructure.passive.ftp;
 
 import de.repa.filesorter.files.FileGroupService;
 import de.repa.filesorter.files.model.ValidFileName;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static de.repa.filesorter.infrastructure.ftp.FileNameTestHelper.createAssertedValidFileName;
+import static de.repa.filesorter.infrastructure.passive.ftp.FileNameTestHelper.createAssertedValidFileName;
 
 public class FileGroupServiceTest {
 
