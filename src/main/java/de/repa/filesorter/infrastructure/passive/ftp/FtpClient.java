@@ -1,9 +1,9 @@
 package de.repa.filesorter.infrastructure.passive.ftp;
 
-import de.repa.filesorter.files.model.FilesByDayDirectory;
-import de.repa.filesorter.files.model.ValidFileName;
 import de.repa.filesorter.files.FileLoadClient;
 import de.repa.filesorter.files.FileWriteClient;
+import de.repa.filesorter.files.model.FilesByDayDirectory;
+import de.repa.filesorter.files.model.ValidFileName;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,12 +84,10 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
 
     private List<ValidFileName> filerValidFileNames(List<String> fileNamesToValidate) {
         List<ValidFileName> resultList = new ArrayList<>();
-        if (fileNamesToValidate != null) {
-            for (String fileName : fileNamesToValidate) {
-                Optional<ValidFileName> build = ValidFileName.builder().build(fileName);
-                if (build.isPresent()) {
-                    resultList.add(build.get());
-                }
+        for (String fileName : fileNamesToValidate) {
+            Optional<ValidFileName> build = ValidFileName.builder().build(fileName);
+            if (build.isPresent()) {
+                resultList.add(build.get());
             }
         }
         return resultList;
