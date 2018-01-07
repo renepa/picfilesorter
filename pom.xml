@@ -45,6 +45,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mockftpserver</groupId>
+            <artifactId>MockFtpServer</artifactId>
+            <version>2.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

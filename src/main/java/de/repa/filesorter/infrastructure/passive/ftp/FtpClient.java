@@ -59,8 +59,9 @@ public class FtpClient implements FileLoadClient, FileWriteClient {
         for (ValidFileName validFileName : validFileNames) {
             String sourcePath = PATH + "/" + validFileName.getValue();
             String targetPath = targetDirectoryPath + "/" + validFileName.getValue();
-            ftpSession.getClientInstance().rename(sourcePath, targetPath);
-            logger.debug("Moved file: {} to {}", sourcePath, targetPath);
+            boolean success = ftpSession.getClientInstance().rename(sourcePath, targetPath);
+
+            logger.debug(success ? "Moved file: {} to {}" : "NOT moved file {} to {}. Leaved there", sourcePath, targetPath);
         }
         logger.info("Finished cut files for day {} with {} files", directoryName, validFileNames.size());
     }
