@@ -17,7 +17,7 @@ public class FileGroupApplicationServiceRestAdapter {
     @Async
     @RequestMapping(method = RequestMethod.GET, path = "/groupByDate")
     public void groupFilesByDate() {
-        fileGroupApplicationService.camMovingAlert();
+        fileGroupApplicationService.groupFilesByDate();
     }
 
 }

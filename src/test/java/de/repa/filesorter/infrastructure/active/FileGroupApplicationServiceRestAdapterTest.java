@@ -1,7 +1,6 @@
 package de.repa.filesorter.infrastructure.active;
 
 import de.repa.filesorter.application.FileGroupApplicationService;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,7 +23,7 @@ public class FileGroupApplicationServiceRestAdapterTest {
     @Test
     public void testCamMovingAlert() throws Exception {
         testRestTemplate.getForObject("/rest/fileGroupService/groupByDate", String.class);
-        Mockito.doNothing().when(fileGroupApplicationService).camMovingAlert();
-        Mockito.verify(fileGroupApplicationService).camMovingAlert();
+        Mockito.doNothing().when(fileGroupApplicationService).groupFilesByDate();
+        Mockito.verify(fileGroupApplicationService).groupFilesByDate();
     }
 }

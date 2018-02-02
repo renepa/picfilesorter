@@ -26,7 +26,7 @@ public class FileGroupApplicationService {
     @Autowired
     private FileGroupService fileGroupService;
 
-    public void camMovingAlert() {
+    public void groupFilesByDate() {
         logger.info("Received rest request for cam alert");
         List<ValidFileName> unGroupedFilesInRootDirectory = fileLoadClient.loadValidFileNamesOfPicturesInRootDir();
         Set<FilesByDayDirectory> filesByDayDirectories = fileGroupService.groupFileNamesByDay(unGroupedFilesInRootDirectory);
