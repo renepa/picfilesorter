@@ -1,6 +1,6 @@
 package de.repa.filesorter.application;
 
-import de.repa.filesorter.files.FileGroupService;
+import de.repa.filesorter.files.FilesByDayDirectoryFactory;
 import de.repa.filesorter.files.FileLoadClient;
 import de.repa.filesorter.files.FileWriteClient;
 import de.repa.filesorter.files.model.FilesByDayDirectory;
@@ -24,12 +24,12 @@ public class FileGroupApplicationService {
     private FileWriteClient fileWriteClient;
 
     @Autowired
-    private FileGroupService fileGroupService;
+    private FilesByDayDirectoryFactory filesByDayDirectoryFactory;
 
     public void groupFilesByDate() {
         logger.info("Received rest request for cam alert");
         List<ValidFileName> unGroupedFilesInRootDirectory = fileLoadClient.loadValidFileNamesOfPicturesInRootDir();
-        Set<FilesByDayDirectory> filesByDayDirectories = fileGroupService.groupFileNamesByDay(unGroupedFilesInRootDirectory);
+        Set<FilesByDayDirectory> filesByDayDirectories = filesByDayDirectoryFactory.createFilesByDayDirectories(unGroupedFilesInRootDirectory);
         fileWriteClient.cutFilesFromRootToDayDirectory(filesByDayDirectories);
     }
 }

@@ -1,6 +1,6 @@
 package de.repa.filesorter.infrastructure.passive.ftp;
 
-import de.repa.filesorter.files.FileGroupService;
+import de.repa.filesorter.files.FilesByDayDirectoryFactory;
 import de.repa.filesorter.files.model.ValidFileName;
 import de.repa.filesorter.files.model.FilesByDayDirectory;
 import org.assertj.core.api.Assertions;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 import static de.repa.filesorter.infrastructure.passive.ftp.FileNameTestHelper.createAssertedValidFileName;
 
-public class FileGroupServiceTest {
+public class FilesByDayDirectoryFactoryTest {
 
-    private FileGroupService fileGroupService = new FileGroupService();
+    private FilesByDayDirectoryFactory filesByDayDirectoryFactory = new FilesByDayDirectoryFactory();
 
     @Test
     public void testGroupFileNamesByDay() throws Exception {
@@ -30,7 +30,7 @@ public class FileGroupServiceTest {
                 createAssertedValidFileName("2017_02_09_18_29_12.jpg"),
                 createAssertedValidFileName("2016_03_09_18_29_12.jpg"),
                 createAssertedValidFileName("2017_02_10_23_05_00.jpg"));
-        Set<FilesByDayDirectory> resultSet = fileGroupService.groupFileNamesByDay(fileList);
+        Set<FilesByDayDirectory> resultSet = filesByDayDirectoryFactory.createFilesByDayDirectories(fileList);
         Assertions.assertThat(resultSet)
                 .extracting("day")
                 .contains("2017_02_12", "2017_02_10", "2017_02_11", "2017_02_09", "2016_03_09");
@@ -67,7 +67,7 @@ public class FileGroupServiceTest {
     @Test
     public void testGroupFileNamesByDayWithEmptyList() throws Exception {
         List<ValidFileName> fileList = Collections.EMPTY_LIST;
-        Set<FilesByDayDirectory> resultMap = fileGroupService.groupFileNamesByDay(fileList);
+        Set<FilesByDayDirectory> resultMap = filesByDayDirectoryFactory.createFilesByDayDirectories(fileList);
         Assertions.assertThat(resultMap.isEmpty());
     }
 }

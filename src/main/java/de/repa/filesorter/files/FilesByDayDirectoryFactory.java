@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class FileGroupService {
+public class FilesByDayDirectoryFactory {
 
-    public Set<FilesByDayDirectory> groupFileNamesByDay(List<ValidFileName> fileNames) {
+    public Set<FilesByDayDirectory> createFilesByDayDirectories(List<ValidFileName> fileNames) {
         Map<String, FilesByDayDirectory> tempOrderMap = new HashMap<>();
         Set<FilesByDayDirectory> resultSet = new HashSet<>();
         for (ValidFileName fileName : fileNames) {

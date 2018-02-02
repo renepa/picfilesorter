@@ -70,7 +70,7 @@
                             <ignore>de.repa.filesorter.FilesorterApplication</ignore>
                         </ignores>
                         <excludes>
-                            <exclude>de/repa/filesorter/AlertManagerApplication.class</exclude>
+                            <exclude>de/repa/filesorter/FilesorterApplication.class</exclude>
                             <exclude>de/repa/filesorter/files/model/Regex.class</exclude>
                             <exclude>de/repa/filesorter/IndexRestController.class</exclude>
                             <exclude>com/example/**/*Test.class</exclude>
