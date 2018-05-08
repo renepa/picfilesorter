@@ -1,6 +1,5 @@
-package de.repa.filesorter.files;
+package de.repa.filesorter.domain.files;
 
-import de.repa.filesorter.files.model.FilesByDayDirectory;
 import de.repa.filesorter.infrastructure.passive.ftp.FileClientException;
 
 import java.util.Set;

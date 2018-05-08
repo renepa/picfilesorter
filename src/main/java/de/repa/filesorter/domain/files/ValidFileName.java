@@ -1,4 +1,4 @@
-package de.repa.filesorter.files.model;
+package de.repa.filesorter.domain.files;
 
 import java.util.Optional;
 import java.util.regex.Matcher;

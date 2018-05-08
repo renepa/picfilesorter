@@ -1,4 +1,4 @@
-package de.repa.filesorter.files.model;
+package de.repa.filesorter.domain.files;
 
 public final class Regex {
     public static final String DATE_REGEX =

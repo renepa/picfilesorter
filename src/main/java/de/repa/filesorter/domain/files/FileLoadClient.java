@@ -1,6 +1,4 @@
-package de.repa.filesorter.files;
-
-import de.repa.filesorter.files.model.ValidFileName;
+package de.repa.filesorter.domain.files;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package de.repa.filesorter.application;
 
-import de.repa.filesorter.files.FilesByDayDirectoryFactory;
-import de.repa.filesorter.files.FileLoadClient;
-import de.repa.filesorter.files.FileWriteClient;
-import de.repa.filesorter.files.model.FilesByDayDirectory;
-import de.repa.filesorter.files.model.ValidFileName;
+import de.repa.filesorter.domain.files.FilesByDayDirectoryFactory;
+import de.repa.filesorter.domain.files.FileLoadClient;
+import de.repa.filesorter.domain.files.FileWriteClient;
+import de.repa.filesorter.domain.files.FilesByDayDirectory;
+import de.repa.filesorter.domain.files.ValidFileName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

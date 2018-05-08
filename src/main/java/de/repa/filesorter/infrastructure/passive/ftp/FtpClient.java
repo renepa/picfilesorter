@@ -1,9 +1,9 @@
 package de.repa.filesorter.infrastructure.passive.ftp;
 
-import de.repa.filesorter.files.FileLoadClient;
-import de.repa.filesorter.files.FileWriteClient;
-import de.repa.filesorter.files.model.FilesByDayDirectory;
-import de.repa.filesorter.files.model.ValidFileName;
+import de.repa.filesorter.domain.files.FileLoadClient;
+import de.repa.filesorter.domain.files.FileWriteClient;
+import de.repa.filesorter.domain.files.FilesByDayDirectory;
+import de.repa.filesorter.domain.files.ValidFileName;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
-package de.repa.filesorter.files.model;
+package de.repa.filesorter.domain.files;
 
-import de.repa.filesorter.files.model.exceptions.IllegalDayStringException;
+import de.repa.filesorter.domain.files.exceptions.IllegalDayStringException;
 
 import java.util.HashSet;
 import java.util.Set;

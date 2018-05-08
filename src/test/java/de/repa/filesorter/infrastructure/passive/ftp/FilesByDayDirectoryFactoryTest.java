@@ -1,8 +1,8 @@
 package de.repa.filesorter.infrastructure.passive.ftp;
 
-import de.repa.filesorter.files.FilesByDayDirectoryFactory;
-import de.repa.filesorter.files.model.ValidFileName;
-import de.repa.filesorter.files.model.FilesByDayDirectory;
+import de.repa.filesorter.domain.files.FilesByDayDirectoryFactory;
+import de.repa.filesorter.domain.files.ValidFileName;
+import de.repa.filesorter.domain.files.FilesByDayDirectory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

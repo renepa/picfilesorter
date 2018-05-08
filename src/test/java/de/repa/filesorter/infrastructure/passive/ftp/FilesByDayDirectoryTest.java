@@ -1,7 +1,7 @@
 package de.repa.filesorter.infrastructure.passive.ftp;
 
-import de.repa.filesorter.files.model.FilesByDayDirectory;
-import de.repa.filesorter.files.model.exceptions.IllegalDayStringException;
+import de.repa.filesorter.domain.files.FilesByDayDirectory;
+import de.repa.filesorter.domain.files.exceptions.IllegalDayStringException;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
